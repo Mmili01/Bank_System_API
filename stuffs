@@ -1,0 +1,57 @@
+The contents of a user model in a bank system API will vary depending on the specific requirements of your application and the data you need to capture about users. However, here are some common fields that are typically included in a user model for a bank system:
+
+1. **User ID**: A unique identifier for each user.
+
+2. **Username**: The username or login ID used for authentication.
+
+3. **Password**: A securely hashed or encrypted password to authenticate users.
+
+4. **First Name and Last Name**: The user's full name.
+
+5. **Email Address**: The user's email address for communication and notifications.
+
+6. **Phone Number**: Contact number for the user.
+
+7. **Date of Birth**: The user's date of birth, often used for identity verification.
+
+8. **Address**: The user's physical address, including street, city, state, and postal code.
+
+9. **Social Security Number (SSN) or National ID**: Depending on the region, this might be required for identity verification and compliance with financial regulations.
+
+10. **User Role**: Assign a role or roles to the user, such as "Customer," "Admin," or "Manager," to control access and permissions within the system.
+
+11. **Account Information**: If applicable, you may link users to their bank accounts and other financial products they own.
+
+12. **Security Questions/Answers**: To provide an additional layer of security, you can store security questions and answers that users can use to reset their passwords or access their accounts.
+
+13. **Profile Picture**: An optional field for storing the user's profile picture.
+
+14. **Account Status**: Whether the user's account is active, suspended, or closed.
+
+15. **Date of Registration**: The date when the user registered with the bank system.
+
+16. **Last Login Timestamp**: Record the timestamp of the user's last login for auditing and security purposes.
+
+17. **Authentication Tokens**: If using token-based authentication, store the user's authentication tokens.
+
+18. **Audit Trail**: A history of important events related to the user's account, such as password changes, profile updates, or security-related actions.
+
+19. **Associated Accounts**: If a user can have multiple accounts (e.g., savings, checking), you may need to associate the user with their account(s) through a relationship in the database.
+
+20. **Notifications Preferences**: Allow users to set their notification preferences, such as email or SMS notifications for account activity.
+
+21. **KYC (Know Your Customer) Information**: Depending on regulatory requirements, you may need to capture additional personal and financial information for identity verification and compliance purposes.
+
+Remember that data privacy and security are of paramount importance when dealing with user data, especially in a financial institution. Ensure that you implement strong encryption and access controls to protect user information. Additionally, comply with all relevant data protection and privacy regulations in your jurisdiction, such as GDPR or CCPA.
+
+import * as mongoose from 'mongoose'
+
+https://www.makeuseof.com/javascript-module-systems/
+
+
+"scripts": {
+    "test": "jest",
+    "start:dev": "npx nodemon",
+    "build": "rimraf ./build && tsc",
+    "start": "npm run build && node build/index.js"
+  },
