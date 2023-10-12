@@ -1,5 +1,6 @@
 import mongoose, { Document,  model } from "mongoose";
 import validator from "validator";
+import bcrypt from "bcrypt"
 
 // Define an interface for the user document
 interface IUserDocument extends Document {
@@ -82,7 +83,7 @@ const UserSchema = new mongoose.Schema<IUserDocument>({
       },
   dateOfBirth:{
     type:Date,
-    required:true,
+    // required:true,
   },
   profilePicture:{
     type:String,
@@ -100,6 +101,22 @@ const UserSchema = new mongoose.Schema<IUserDocument>({
     default:false
   },
 });
+
+
+UserSchema.pre('save', async function () {
+  // console.log(this.modifiedPaths());
+  // console.log(this.isModified('name'));
+  if (!this.isModified('password')) return;
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+UserSchema.methods.comparePassword = async function (canditatePassword:string) {
+  const isMatch = await bcrypt.compare(canditatePassword, this.password);
+  return isMatch;
+};
+
+
 
 // Create and export the Mongoose model
 const UserModel = model<IUserDocument>("User", UserSchema);
