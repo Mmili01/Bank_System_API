@@ -1,4 +1,4 @@
-import mongoose, { Document,  model } from "mongoose";
+import  mongoose, { Document,  model } from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt"
 
@@ -19,6 +19,7 @@ interface IUserDocument extends Document {
   passwordTokenExpirationDate:Date;
   verificationToken:string
   isVerified:boolean;
+  comparePassword(password: string): boolean;
   
 }
 

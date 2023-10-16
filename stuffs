@@ -55,3 +55,12 @@ https://www.makeuseof.com/javascript-module-systems/
     "build": "rimraf ./build && tsc",
     "start": "npm run build && node build/index.js"
   },
+
+
+  Account Management:
+
+GET /api/customer/accounts: Retrieve a list of the customer's accounts.
+GET /api/customer/accounts/{accountID}: Get details of a specific account.
+POST /api/customer/accounts: Open a new account.
+PUT /api/customer/accounts/{accountID}: Update account details (e.g., account name).
+DELETE /api/customer/accounts/{accountID}: Close an account.
