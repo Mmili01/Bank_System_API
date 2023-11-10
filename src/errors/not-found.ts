@@ -11,7 +11,7 @@
 // module.exports = NotFoundError;
 
 import { StatusCodes } from "http-status-codes";
-import { CustomAPIError } from "./custom-api";
+import  {CustomAPIError}  from "./custom-api";
 
 export class NotFoundError extends CustomAPIError{
     public statusCodes : StatusCodes

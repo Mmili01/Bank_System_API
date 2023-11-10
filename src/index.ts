@@ -11,8 +11,15 @@ import { connectDB } from "./db/connect";
 //routes
 import authRouter from './routes/authRoutes'
 
+
+//middlewares 
+import errorHandlerMiddleWare from './middleware/error-handler'
+
 app.use(express.json());
+
 app.use('/api/v1/auth', authRouter);
+
+app.use(errorHandlerMiddleWare)
 
 const port = process.env.PORT || 8000;
 const start = async () => {

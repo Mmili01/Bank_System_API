@@ -1,5 +1,5 @@
 
-export class CustomAPIError extends Error {
+ export class CustomAPIError extends Error {
     static BadRequestError: any;
     static UnauthenticatedError: any;
   static UnauthorisedError: any;

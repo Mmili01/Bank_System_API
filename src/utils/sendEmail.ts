@@ -8,7 +8,7 @@ interface sendEmailData{
 }
 
 export const sendEmail = async ({to,subject,html}:sendEmailData)=>{
-    let testAccount = await nodemailer.createTestAccount();
+    // let testAccount = await nodemailer.createTestAccount();
     const transporter = nodemailer.createTransport(nodemailerConfig)
 
    async function main() {
@@ -19,6 +19,9 @@ export const sendEmail = async ({to,subject,html}:sendEmailData)=>{
             subject,
             html,
         })
+        console.log("Message sent: %s", info.messageId);
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        
     } catch (error) {
         console.log(error);
         
