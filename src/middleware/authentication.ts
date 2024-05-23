@@ -1,4 +1,4 @@
-import { UnauthenticatedError } from "../errors/index";
+import { UnauthenticatedError,UnauthorisedError } from "../errors/index";
 
 import TokenModel from "../models/Token";
 
@@ -51,7 +51,28 @@ export const authenticateUser = async (
     // );
     attachCookiesToResponse( res,  tokenUser, refreshToken );
   } catch (error) {}
+}
+
+export const authorizePermissions = (...roles:string[]) => {
+  return (req:Request, _res:Response, next:NextFunction) => {
+    //@ts-expect-error
+    if (!roles.includes(req.user.role)) {
+      throw new UnauthorisedError(
+        "Unauthorized to access this route"
+      );
+    }
+    next();
+  };
 };
+
+
+
+
+
+
+
+
+
 
 
 //import * as CustomAPIError from '

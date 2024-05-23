@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import UserModel from "../models/User";
 import { StatusCodes } from "http-status-codes";
-import {UnauthenticatedError,BadRequestError} from "../errors/index";
+import { UnauthenticatedError, BadRequestError } from "../errors/index";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 dotenv.config();
 import generateUniqueAccountNumber from "../utils/generateAccountNumber";
 import * as crypto from "crypto";
-import {attachCookiesToResponse} from "../utils/jwt";
+import { attachCookiesToResponse } from "../utils/jwt";
 // import sendResetPasswordEmail from "../utils/sendResetPassword";
 import sendVerificationEmail from "../utils/sendVerificationEmail";
 // import createTokenUser from "../utils/createTokenUser";
@@ -92,7 +92,6 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   if (!username || !password) {
-    
     throw new BadRequestError("Parameters cannot be empty ");
   }
 
@@ -118,7 +117,7 @@ export const login = async (req: Request, res: Response) => {
     phoneNumber: user.phoneNumber,
     accountNumber: user.accountNumber,
   };
- 
+
   let refreshToken = "";
   const existingToken = await TokenModel.findOne({ user: user._id });
 
@@ -130,7 +129,7 @@ export const login = async (req: Request, res: Response) => {
     refreshToken = existingToken.refreshToken;
     attachCookiesToResponse(
       res,
-       {
+      {
         firstname: tokenUser.firstname,
         lastname: tokenUser.lastName,
         surname: tokenUser.surname,
@@ -139,7 +138,7 @@ export const login = async (req: Request, res: Response) => {
         phoneNumber: tokenUser.phoneNumber,
         accountNumber: tokenUser.accountNumber,
       },
-      refreshToken,
+      refreshToken
     );
 
     res.status(StatusCodes.OK).json({ user: tokenUser });
@@ -151,18 +150,16 @@ export const login = async (req: Request, res: Response) => {
   const ip = req.ip;
   const userToken = { refreshToken, ip, userAgent, user: user._id };
 
-  await TokenModel.create(userToken)
+  await TokenModel.create(userToken);
 
-  attachCookiesToResponse( res,  tokenUser, refreshToken );
+  attachCookiesToResponse(res, tokenUser, refreshToken);
 
   res.status(StatusCodes.OK).json({ user: tokenUser });
-  
 };
 
 export const verifyEmail = async (req: Request, res: Response) => {
   const { token, email } = req.query;
   console.log(token, email);
-  
 
   const user = await UserModel.findOne({ email });
 
@@ -170,7 +167,6 @@ export const verifyEmail = async (req: Request, res: Response) => {
     throw new UnauthenticatedError("what is wrong");
   }
 
-  
   if (user.verificationToken !== token) {
     throw new UnauthenticatedError(" Failed");
   }
@@ -189,7 +185,25 @@ export const verifyEmail = async (req: Request, res: Response) => {
 const forgotPassword = async (_req: Request, res: Response) => {
   res.send("forgot password ");
 };
-export const logout = async (_req: Request, res: Response) => {
+export const logout = async (req: Request, res: Response) => {
+  try {
+    const userId = (req.user as { userId?: string }).userId;
+    if (userId) {
+      await TokenModel.findOneAndDelete({ user: req.user.userId });
+    }
+    res.cookie('accessToken', 'logout',{
+      httpOnly:true,
+      expires: new Date(Date.now())
+    })
+    res.cookie('refreshToken','logout',{
+      httpOnly:true,
+      expires:new Date(Date.now())
+    })
+    res.status(StatusCodes.OK).json({msg:'User Looged out'})
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg:'Internal Server Error'})
+  }
+
   res.send("logout User");
 };
 
